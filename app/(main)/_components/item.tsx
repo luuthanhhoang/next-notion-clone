@@ -31,7 +31,7 @@ type Props = {
   expanded?: boolean;
   isSearch?: boolean;
   level?: number;
-  onClick: () => void;
+  onClick?: () => void;
   onExpand?: () => void;
   label: string;
   Icon: LucideIcon;
