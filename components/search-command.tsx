@@ -6,8 +6,6 @@ import { useQuery } from "convex/react";
 import { useRouter } from "next/navigation";
 import { useUser } from "@clerk/clerk-react";
 
-import { useSearch } from "@/hooks/use-search";
-import { api } from "@/convex/_generated/api";
 import {
   CommandDialog,
   CommandEmpty,
@@ -15,14 +13,15 @@ import {
   CommandInput,
   CommandItem,
   CommandList,
-} from "./ui/command";
+} from "@/components/ui/command";
+import { useSearch } from "@/hooks/use-search";
+import { api } from "@/convex/_generated/api";
 
 export const SearchCommand = () => {
-  const [isMounted, setIsMounted] = useState(false);
   const { user } = useUser();
-
   const router = useRouter();
-  const documents = useQuery(api.documents.getSearch);
+  // const documents = useQuery(api.documents.getSearch);
+  const [isMounted, setIsMounted] = useState(false);
 
   const toggle = useSearch((store) => store.toggle);
   const isOpen = useSearch((store) => store.isOpen);
@@ -41,7 +40,6 @@ export const SearchCommand = () => {
     };
 
     document.addEventListener("keydown", down);
-
     return () => document.removeEventListener("keydown", down);
   }, [toggle]);
 
@@ -50,30 +48,31 @@ export const SearchCommand = () => {
     onClose();
   };
 
-  if (!isMounted) return null;
+  if (!isMounted) {
+    return null;
+  }
 
   return (
     <CommandDialog open={isOpen} onOpenChange={onClose}>
       <CommandInput placeholder={`Search ${user?.fullName}'s Jotion...`} />
       <CommandList>
-        <CommandEmpty>No result found.</CommandEmpty>
+        <CommandEmpty>No results found.</CommandEmpty>
         <CommandGroup heading="Documents">
-          {documents?.map((document) => (
+          {/* {documents?.map((document) => (
             <CommandItem
               key={document._id}
               value={`${document._id}-${document.title}`}
-              onSelect={() => onSelect(document._id)}
               title={document.title}
+              onSelect={() => onSelect(document._id)}
             >
               {document.icon ? (
                 <p className="mr-2 text-[18px]">{document.icon}</p>
               ) : (
                 <File className="mr-2 h-4 w-4" />
               )}
-
               <span>{document.title}</span>
             </CommandItem>
-          ))}
+          ))} */}
         </CommandGroup>
       </CommandList>
     </CommandDialog>
